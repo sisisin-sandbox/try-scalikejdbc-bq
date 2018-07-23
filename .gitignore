@@ -27,3 +27,5 @@ bin/
 *.iml
 *.ipr
 *.iws
+
+default.conf

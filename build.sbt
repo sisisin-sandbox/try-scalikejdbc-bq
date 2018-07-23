@@ -14,6 +14,7 @@ lazy val root = (project in file(".")).
       "ch.qos.logback"  %  "logback-classic"    % "1.2.+",
       "com.mayreh" %% "scalikejdbc-bigquery" % "0.0.7",
       "com.google.cloud" % "google-cloud-bigquery" % "0.30.0-beta",
-      "org.scalikejdbc" %% "scalikejdbc"        % "3.2.+"
+      "org.scalikejdbc" %% "scalikejdbc"        % "3.2.+",
+      "com.typesafe" % "config" % "1.3.2"
     )
   )

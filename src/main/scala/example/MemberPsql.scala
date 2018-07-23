@@ -34,9 +34,16 @@ object MemberPsql extends MemberProvider {
 }
 
 object MemberBq extends MemberProvider {
-  val dataset = DatasetId.of("your-gcp-project-id", "your-dataset")
+  val dataset = DatasetId.of(Conf.gcloud.projectId, Conf.gcloud.datasetId)
 
-  def findAll(executor: QueryExecutor) = bq {
-    select.from(MemberBq in dataset as m)
-  }.map(apply(_)).single.run(executor)
+  def findAll(executor: QueryExecutor) = {
+
+    val b = bq {
+      val s = selectFrom(MemberBq in dataset as m)
+      println(s.sql.value)
+      s
+    }
+    new BqSQL(select(m.*).from(MemberBq in dataset as m).sql)
+      .map(apply(_)).single.run(executor)
+  }
 }

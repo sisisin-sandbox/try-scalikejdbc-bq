@@ -1,9 +1,6 @@
 package example
 
-import java.io.FileInputStream
-
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.cloud.bigquery.{BigQueryOptions, DatasetId}
+import com.google.cloud.bigquery.BigQueryOptions
 import scalikejdbc._
 import scalikejdbc.bigquery._
 
@@ -12,24 +9,21 @@ object Hello extends App {
 
   def main() = {
     Psql.proc()
+    BQ.proc()
   }
 }
 
 object BQ {
   def proc() = {
-    val credentials = GoogleCredentials.fromStream(new FileInputStream("/path/to/key.json"))
+    //    val credentials = GoogleCredentials.fromStream(new FileInputStream("/path/to/key.json"))
     val bigQuery = BigQueryOptions.newBuilder()
-      .setCredentials(credentials)
-      .setProjectId("your-gcp-project-id")
+      //      .setCredentials(credentials)
+      .setProjectId(Conf.gcloud.projectId)
       .build()
       .getService
 
-    val dataset = DatasetId.of("your-gcp-project-id", "your-dataset")
-
-    // build query by QueryDSL then execute
     val executor = new QueryExecutor(bigQuery, QueryConfig())
-
-    MemberBq.findAll(executor)
+    println(MemberBq.findAll(executor).result)
   }
 }
 
